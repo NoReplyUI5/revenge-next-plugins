@@ -1,0 +1,18 @@
+{
+	"name": "@noreplyui5/revenge-plugins",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "revenge-plugin build",
+		"build:dev": "revenge-plugin build --dev",
+		"generate-index": "revenge-plugin generate-index",
+		"serve": "revenge-plugin serve"
+	},
+	"dependencies": {
+		"@revenge-mod/plugin-cli": "git+https://github.com/revenge-mod/revenge-plugin-cli.git"
+	},
+	"devDependencies": {
+		"@revenge-mod/types": "git+https://github.com/revenge-mod/revenge-types.git",
+		"typescript": "^5.8.3"
+	}
+}
