@@ -4,7 +4,8 @@
 	"name": "Bluetooth Audio Fix",
 	"description": "Prevents Discord from switching to handsfree (HFP) mode during calls by patching the native audio manager's setCommunicationModeOn method.",
 	"author": "NoReplyUI5, Narwhal, redstonekasi",
-	"version": "1.0.3",
+	"icon": "voice_bar_bluetooth",
+	"version": "1.0.4",
 	"dependencies": {
 		"revenge.api": {
 			"version": ">=1 <2"

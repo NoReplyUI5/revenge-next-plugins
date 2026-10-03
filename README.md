@@ -9,6 +9,7 @@ A collection of plugins for the [Revenge Next](https://revenge-mod.github.io/) D
 | **Bluetooth Audio Fix** | Prevents Discord from switching to handsfree (HFP) mode during calls by patching the native audio manager. |
 | **Copy Proxy Link** | Adds a "Copy Proxy Link" button to the message action sheet when a message has an attachment or embed with a proxy URL. |
 | **HypeSquad Switcher** | Switch your HypeSquad house from settings. |
+| **UserBG** | Custom user profile backgrounds via usrbg. |
 
 ## Installation
 

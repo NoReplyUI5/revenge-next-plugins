@@ -4,7 +4,8 @@
 	"name": "Copy Proxy Link",
 	"description": "Adds a 'Copy Proxy Link' button to the message action sheet when a message has an attachment or embed with a proxy URL.",
 	"author": "NoReplyUI5",
-	"version": "1.0.2",
+	"icon": "LinkPlusIcon",
+	"version": "1.0.3",
 	"dependencies": {
 		"revenge.api": {
 			"version": ">=1 <2"
