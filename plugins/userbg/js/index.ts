@@ -60,29 +60,39 @@ export default plugin({
 		fetchData()
 
 		const { filters, lookupModule } = revenge.modules.finders
-		const getUserBannerURL = lookupModule(
-			filters.withProps('getUserBannerURL'),
-		)?.[0]
+		let unpatch: (() => void) | null = null
 
-		if (!getUserBannerURL) {
-			console.error('[userbg] getUserBannerURL module not found')
-			return
-		}
+		function tryPatch() {
+			const mod = lookupModule(filters.withProps('getUserBannerURL'))?.[0]
+			if (!mod) return false
 
-		const original = getUserBannerURL.getUserBannerURL
-		getUserBannerURL.getUserBannerURL = (user: any) => {
-			if (bgData && user?.banner === undefined) {
-				const entry = bgData.users[user?.id]
-				if (entry) {
-					return `${bgData.endpoint}/${bgData.bucket}/${bgData.prefix}${user.id}?${entry}`
+			const original = mod.getUserBannerURL
+			mod.getUserBannerURL = (user: any) => {
+				if (bgData && user?.banner === undefined) {
+					const entry = bgData.users[user?.id]
+					if (entry) {
+						return `${bgData.endpoint}/${bgData.bucket}/${bgData.prefix}${user.id}?${entry}`
+					}
 				}
+				return original(user)
 			}
-			return original(user)
+			unpatch = () => { mod.getUserBannerURL = original }
+			return true
 		}
 
-		cleanup(() => {
-			getUserBannerURL.getUserBannerURL = original
-		})
+		if (!tryPatch()) {
+			// Module not ready yet — retry every 500ms for up to 30s
+			const interval = setInterval(() => {
+				if (tryPatch()) clearInterval(interval)
+			}, 500) as unknown as ReturnType<typeof setInterval>
+			const timeout = setTimeout(() => {
+				clearInterval(interval)
+				console.error('[userbg] getUserBannerURL module not found after 30s')
+			}, 30000) as unknown as ReturnType<typeof setTimeout>
+			cleanup(() => { clearInterval(interval); clearTimeout(timeout) })
+		}
+
+		cleanup(() => { unpatch?.() })
 	},
 	SettingsComponent: Settings,
 })
