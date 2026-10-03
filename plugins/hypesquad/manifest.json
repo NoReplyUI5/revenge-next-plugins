@@ -1,0 +1,19 @@
+{
+	"format": 1,
+	"id": "mxtiy.hypesquad",
+	"name": "HypeSquad Switcher",
+	"description": "Switch your HypeSquad house from settings.",
+	"author": "NoReplyUI5",
+	"version": "1.0.0",
+	"dependencies": {
+		"revenge.api": {
+			"version": ">=1 <2"
+		},
+		"discord": {
+			"version": "*"
+		}
+	},
+	"dist": {
+		"script": "index.js"
+	}
+}
