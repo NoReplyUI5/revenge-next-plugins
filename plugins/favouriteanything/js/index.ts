@@ -61,20 +61,34 @@ export default plugin({
 	start({ cleanup }) {
 		const patches: Array<{ cancel: () => void }> = []
 
-		// Gate 1: isAnimatedImageSource — returns true for any media source with a uri
-		patches.push(tryPatchModule(
-			() => revenge.modules.finders.lookupModule(revenge.modules.finders.filters.withProps('isAnimatedImageSource'))?.[0],
-			(mod) => {
-				const orig = mod.isAnimatedImageSource
-				mod.isAnimatedImageSource = function (source: any) {
-					const url: string = source?.uri || source?.sourceURI || ''
-					if (url && (isVideo(url) || isImage(url) || source?.isGIFV)) return true
-					return orig.call(this, source)
-				}
-				console.log('[FavouriteAnything] Patched isAnimatedImageSource')
-				return () => { mod.isAnimatedImageSource = orig }
+		// Gate 1: isAnimatedImageSource — patch on load via subscription so lazy modules are covered
+		let unsubAnimated: (() => void) | null = null
+		let unpatchAnimated: (() => void) | null = null
+
+		function patchAnimated() {
+			const mod = revenge.modules.finders.lookupModule(revenge.modules.finders.filters.withProps('isAnimatedImageSource'))?.[0]
+			if (!mod || unpatchAnimated) return
+			const orig = mod.isAnimatedImageSource
+			mod.isAnimatedImageSource = function (source: any) {
+				const url: string = source?.uri || source?.sourceURI || ''
+				if (url && (isVideo(url) || isImage(url) || source?.isGIFV)) return true
+				return orig.call(this, source)
+			}
+			unpatchAnimated = () => { mod.isAnimatedImageSource = orig }
+		}
+
+		// Try immediately (already loaded), then subscribe for lazy load
+		patchAnimated()
+		unsubAnimated = revenge.modules.metro.onAnyModuleInitialized((_id: any, exports: any) => {
+			if (exports?.isAnimatedImageSource) patchAnimated()
+		})
+
+		patches.push({
+			cancel() {
+				unsubAnimated?.()
+				unpatchAnimated?.()
 			},
-		))
+		})
 
 // addFavoriteGIF: set format=2 for videos
 		patches.push(tryPatchModule(
