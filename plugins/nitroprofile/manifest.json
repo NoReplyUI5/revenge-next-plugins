@@ -5,7 +5,7 @@
 	"description": "Custom profile backgrounds via UserBG and custom avatars via UserPFP. Enable either or both.",
 	"author": "NoReplyUI5, k1ng_op",
 	"icon": "NitroWheelIcon",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"dependencies": {
 		"revenge.api": {
 			"version": ">=1 <2"

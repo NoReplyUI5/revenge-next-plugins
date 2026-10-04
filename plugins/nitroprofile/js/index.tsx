@@ -212,6 +212,8 @@ export default plugin<{ jsonStorage: NitroSettings }>({
 		applyPFPPatches()
 		cleanup(waitForModules(filters.withProps('getUserAvatarURL', 'getUserAvatarSource'), () => applyPFPPatches()))
 
+		if (plugin.startedLate) plugin.requireReload()
+
 		cleanup(() => {
 			unpatchBG?.()
 			unpatchAvatarURLBefore?.()
