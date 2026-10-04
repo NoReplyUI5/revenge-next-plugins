@@ -104,27 +104,6 @@ export default plugin({
 			}),
 		))
 
-		// useFavoriteGIFsMobile: fix video thumbnail URLs for the picker
-		patches.push(tryPatchModule(
-			() => revenge.modules.finders.lookupModule(revenge.modules.finders.filters.withProps('useFavoriteGIFsMobile'))?.[0],
-			(mod) => {
-				let lastFavs: any = null
-				return revenge.patcher.after(mod, 'useFavoriteGIFsMobile', (_args: any[], result: any) => {
-					if (result?.favorites && Array.isArray(result.favorites) && result.favorites !== lastFavs) {
-						lastFavs = result.favorites
-						for (const item of result.favorites) {
-							if (!item || processed.has(item)) continue
-							processed.add(item)
-							if (isVideo(item.url) || isVideo(item.src)) {
-								item.src = makeVideoThumbnail(item.src || item.url)
-							}
-						}
-					}
-					return result
-				})
-			},
-		))
-
 		cleanup(() => { for (const p of patches) p.cancel() })
 	},
 })

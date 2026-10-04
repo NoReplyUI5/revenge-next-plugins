@@ -10,7 +10,7 @@ A collection of plugins for the [Revenge Next](https://revenge-mod.github.io/) D
 | **Copy Proxy Link** | Adds a "Copy Proxy Link" button to the message action sheet when a message has an attachment or embed with a proxy URL. |
 | **FavouriteAnything** | Favourite any image or video, not just GIFs. Adds the favourite button to all media in the image viewer. |
 | **HypeSquad Switcher** | Switch your HypeSquad house from settings. |
-| **UserBG** | Custom user profile backgrounds via usrbg. |
+| **NitroProfile** | Custom profile banners via UserBG and custom avatars via UserPFP. Enable either or both. |
 
 ## Installation
 
