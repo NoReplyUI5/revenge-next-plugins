@@ -21,10 +21,22 @@ async function applyHouse(id: number): Promise<void> {
 	}
 }
 
+
+function getCurrentHouseId(): number {
+	const { filters, lookupModule } = revenge.modules.finders
+	const userStore = lookupModule(filters.withProps('getCurrentUser'))?.[0]
+	const flags: number = userStore?.getCurrentUser?.()?.flags ?? 0
+	if (flags & 64) return 1   // Bravery
+	if (flags & 128) return 2  // Brilliance
+	if (flags & 256) return 3  // Balance
+	return 0
+}
+
 function Settings() {
 	const { React } = revenge.react
 	const { ScrollView } = revenge.react.ReactNative
-	const { TableRowGroup, TableRow } = (revenge as any).discord?.design?.Design ?? {}
+	const { Page } = (revenge as any).components
+	const { TableRowGroup, TableRadioGroup, TableRadioRow } = (revenge as any).discord?.design?.Design ?? {}
 
 	const [pending, setPending] = React.useState(false)
 	const [status, setStatus] = React.useState<string | null>(null)
@@ -43,22 +55,29 @@ function Settings() {
 		}
 	}
 
-	if (!TableRowGroup || !TableRow) return null
+	if (!TableRowGroup || !TableRadioGroup || !TableRadioRow) return null
 
 	return React.createElement(
-		ScrollView,
-		{ contentContainerStyle: { paddingBottom: 40 } },
+		Page,
+		null,
 		React.createElement(
-			TableRowGroup,
-			{ title: status ? `Choose Your House — ${status}` : 'Choose Your House' },
-			...HOUSES.map(house =>
-				React.createElement(TableRow, {
-					key: house.id,
-					label: house.label,
-					subLabel: house.subLabel,
-					disabled: pending,
-					onPress: () => select(house.id),
-				}),
+			ScrollView,
+			{ contentContainerStyle: { paddingTop: 16, paddingBottom: 40, gap: 16 } },
+			React.createElement(
+				TableRowGroup,
+				{ title: status ? `Choose Your House - ${status}` : 'Choose Your House' },
+				React.createElement(
+					TableRadioGroup,
+					{ onChange: (v: string) => select(Number(v)), defaultValue: String(getCurrentHouseId()) },
+					...HOUSES.map(house =>
+						React.createElement(TableRadioRow, {
+							key: house.id,
+							label: house.label,
+							subLabel: house.subLabel,
+							value: String(house.id),
+						}),
+					),
+				),
 			),
 		),
 	)

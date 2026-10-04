@@ -5,7 +5,7 @@
 	"description": "Switch your HypeSquad house from settings.",
 	"author": "NoReplyUI5",
 	"icon": "ic_switch_accounts",
-	"version": "1.0.1",
+	"version": "1.0.5",
 	"dependencies": {
 		"revenge.api": {
 			"version": ">=1 <2"
