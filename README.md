@@ -8,6 +8,7 @@ A collection of plugins for the [Revenge Next](https://revenge-mod.github.io/) D
 |--------|-------------|
 | **Bluetooth Audio Fix** | Prevents Discord from switching to handsfree (HFP) mode during calls by patching the native audio manager. |
 | **Copy Proxy Link** | Adds a "Copy Proxy Link" button to the message action sheet when a message has an attachment or embed with a proxy URL. |
+| **Copy User ID** | Adds a "Copy User ID" button to the message action sheet to quickly copy the message author's ID. |
 | **FavouriteAnything** | Favourite any image or video, not just GIFs. Adds the favourite button to all media in the image viewer. |
 | **HypeSquad Switcher** | Switch your HypeSquad house from settings. |
 | **NitroProfile** | Custom profile banners via UserBG and custom avatars via UserPFP. Enable either or both. |
